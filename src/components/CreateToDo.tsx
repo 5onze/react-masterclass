@@ -10,12 +10,16 @@ function CreateToDo() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const category = useRecoilValue(categoryState);
   const { register, handleSubmit, setValue } = useForm<IForm>();
+  // localStorage에 데이터 저장하기
+  const saveToDos = () => {
+    localStorage.setItem("todo", JSON.stringify(toDos));
+  };
   const handleValid = ({ toDo }: IForm) => {
-    setToDos((oldToDos) => [
-      { text: toDo, id: Date.now(), category: category },
-      ...oldToDos,
-    ]);
+    setToDos((oldToDos) => {
+      return [{ text: toDo, id: Date.now(), category: category }, ...oldToDos];
+    });
     setValue("toDo", "");
+    saveToDos();
   };
   return (
     <form
