@@ -30,8 +30,9 @@ function App() {
       // same board movement.
       setToDos((allBoards) => {
         const boardCopy = [...allBoards[source.droppableId]];
+        const taskObj = boardCopy[source.index];
         boardCopy.splice(source.index, 1); // 1개 지우기
-        boardCopy.splice(destination?.index, 0, draggableId); // draggableId 추가하기
+        boardCopy.splice(destination?.index, 0, taskObj); // taskObj: todo의 위치 찾기
         return {
           ...allBoards,
           [source.droppableId]: boardCopy,
@@ -42,9 +43,10 @@ function App() {
       // cross board movement
       setToDos((allBoards) => {
         const sourceBoard = [...allBoards[source.droppableId]];
+        const taskObj = sourceBoard[source.index];
         const destinationBoard = [...allBoards[destination.droppableId]];
         sourceBoard.splice(source.index, 1); // 기존 보드에서 item 삭제
-        destinationBoard.splice(destination?.index, 0, draggableId); // 새로운 보드에 item 추가
+        destinationBoard.splice(destination?.index, 0, taskObj); // 새로운 보드에 item 추가
         return {
           ...allBoards,
           [source.droppableId]: sourceBoard,
