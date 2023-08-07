@@ -43,8 +43,18 @@ const Area = styled.div<IAreaProps>`
 
 const Form = styled.form`
   width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
   input {
-    width: 100%;
+    font-size: 16px;
+    border: 0;
+    background-color: white;
+    width: 80%;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0 auto;
   }
 `;
 
@@ -73,6 +83,17 @@ function Board({ toDos, boardId }: IBoardProps) {
     });
     setValue("toDo", "");
   };
+
+  //remove todo
+  const deleteClickHandler = (id: number) => {
+    setToDos((all) => {
+      const copytodos = toDos.filter((todo) => todo.id !== id);
+      return {
+        ...all,
+        [boardId]: copytodos,
+      };
+    });
+  };
   return (
     <Wrapper>
       <Title>{boardId}</Title>
@@ -95,8 +116,9 @@ function Board({ toDos, boardId }: IBoardProps) {
               <DraggableCard
                 key={toDo.id}
                 index={index}
-                toDoId={toDo.id}
-                toDoText={toDo.text}
+                id={toDo.id}
+                text={toDo.text}
+                deleteClick={deleteClickHandler}
               />
             ))}
             {magic.placeholder}

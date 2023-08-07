@@ -3,6 +3,7 @@ import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
 const Card = styled.div<{ isDragging: boolean }>`
+  display: flex;
   border-radius: 5px;
   margin-bottom: 5px;
   padding: 10px;
@@ -11,26 +12,36 @@ const Card = styled.div<{ isDragging: boolean }>`
   box-shadow: ${(props) =>
     props.isDragging ? "0px 2px 5px rgba(0, 0, 0, 0.05)" : "none"};
 `;
-
+const Text = styled.div`
+  flex-grow: 1;
+`;
+const Button = styled.button`
+  border: 0;
+  cursor: pointer;
+`;
 interface IDraggableCardProps {
-  toDoId: number;
-  toDoText: string;
+  id: number;
+  text: string;
   index: number;
+  deleteClick(id: number): void;
 }
 
-function DraggableCard({ toDoId, toDoText, index }: IDraggableCardProps) {
+function DraggableCard({ id, text, index, deleteClick }: IDraggableCardProps) {
   return (
-    <Draggable key={toDoId + ""} draggableId={toDoId + ""} index={index}>
-      {(magic, snapshot) => (
-        <Card
-          isDragging={snapshot.isDragging}
-          ref={magic.innerRef}
-          {...magic.dragHandleProps}
-          {...magic.draggableProps}
-        >
-          {toDoText}
-        </Card>
-      )}
+    <Draggable key={id + ""} draggableId={id + ""} index={index}>
+      {(magic, snapshot) => {
+        return (
+          <Card
+            isDragging={snapshot.isDragging}
+            ref={magic.innerRef}
+            {...magic.dragHandleProps}
+            {...magic.draggableProps}
+          >
+            <Text>{text}</Text>
+            <Button onClick={() => deleteClick(id)}>X</Button>
+          </Card>
+        );
+      }}
     </Draggable>
   );
 }
