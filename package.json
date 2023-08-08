@@ -15,6 +15,7 @@
     "@types/react-dom": "^18.2.7",
     "@types/styled-components": "^5.1.26",
     "apexcharts": "^3.41.0",
+    "polished": "^4.2.2",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-beautiful-dnd": "^13.1.1",
