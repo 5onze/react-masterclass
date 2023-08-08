@@ -3,8 +3,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
 import Board from "./Components/Board";
-import curriedTransparentize from "polished/lib/color/transparentize";
-import { useForm } from "react-hook-form";
+import AddBoard from "./Components/AddBoard";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,41 +21,9 @@ const Boards = styled.div`
   width: 100%;
   gap: 10px;
 `;
-const AddList = styled.div`
-  width: 300px;
-  padding: 20px 10px;
-  padding-top: 10px;
-  background: ${(props) => curriedTransparentize(0.5, props.theme.boardColor)};
-  border-radius: 5px;
-  min-height: 60px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  font-weight: 600;
-  font-size: 18px;
-  color: white;
-  cursor: pointer;
-  &:hover {
-    background: ${(props) =>
-      curriedTransparentize(0.8, props.theme.boardColor)};
-    transition: background-color 0.1s ease-in-out;
-  }
-`;
-
-interface IForm {
-  listTitle: string;
-}
 
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
-  const { register, handleSubmit, setValue } = useForm<IForm>();
-  // add board form
-  const onVaild = ({ listTitle }: IForm) => {
-    setToDos((allBoards) => {
-      return { ...allBoards, [listTitle]: [] };
-    });
-    setValue("listTitle", "");
-  };
   // todolist drag
   const onDragEnd = (info: DropResult) => {
     const { destination, source } = info;
@@ -98,16 +65,7 @@ function App() {
           {Object.keys(toDos).map((boardId) => (
             <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
           ))}
-          <AddList>
-            <h2>+Add another list</h2>
-            <form onSubmit={handleSubmit(onVaild)}>
-              <input
-                {...register("listTitle")}
-                type="text"
-                placeholder="Enter list title..."
-              />
-            </form>
-          </AddList>
+          <AddBoard />
         </Boards>
       </Wrapper>
     </DragDropContext>
