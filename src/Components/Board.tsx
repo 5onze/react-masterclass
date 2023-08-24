@@ -17,11 +17,36 @@ const Wrapper = styled.div`
   overflow: hidden;
 `;
 
-const Title = styled.h2`
+const TitleContainer = styled.div`
   text-align: center;
   font-weight: 600;
   margin-bottom: 10px;
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  span {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: block;
+    background-color: #fff;
+    opacity: 0.6;
+    line-height: 30px;
+    border-radius: 3px;
+    font-size: 16px;
+    &::after {
+      content: "X";
+      width: 30px;
+      height: 30px;
+    }
+    &:hover {
+      background-color: rgba(68, 84, 111, 0.4);
+    }
+  }
+`;
+
+const Title = styled.h2`
+  flex-grow: 1;
 `;
 
 interface IAreaProps {
@@ -70,6 +95,7 @@ interface IForm {
 function Board({ toDos, boardId }: IBoardProps) {
   const setToDos = useSetRecoilState(toDoState);
   const { register, setValue, handleSubmit } = useForm<IForm>();
+  // add ToDo
   const onValid = ({ toDo }: IForm) => {
     const newToDo = {
       id: Date.now(),
@@ -84,7 +110,7 @@ function Board({ toDos, boardId }: IBoardProps) {
     setValue("toDo", "");
   };
 
-  //remove todo
+  // remove todo
   const deleteClickHandler = (id: number) => {
     setToDos((all) => {
       const copytodos = toDos.filter((todo) => todo.id !== id);
@@ -94,9 +120,25 @@ function Board({ toDos, boardId }: IBoardProps) {
       };
     });
   };
+
+  // remove Board
+  const deleteItem = (boardId: string) => {
+    setToDos((all) => {
+      const copyall = { ...all };
+      delete copyall[boardId];
+      return { ...copyall };
+    });
+  };
   return (
     <Wrapper>
-      <Title>{boardId}</Title>
+      <TitleContainer>
+        <Title>{boardId}</Title>
+        <span
+          onClick={() => {
+            deleteItem(boardId);
+          }}
+        ></span>
+      </TitleContainer>
       <Form onSubmit={handleSubmit(onValid)}>
         <input
           {...register("toDo", { required: true })}
