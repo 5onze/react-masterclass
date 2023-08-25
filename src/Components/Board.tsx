@@ -123,10 +123,19 @@ function Board({ toDos, boardId }: IBoardProps) {
 
   // remove Board
   const deleteItem = (boardId: string) => {
-    setToDos((all) => {
+    // delete 방식
+    /* setToDos((all) => {
       const copyall = { ...all };
       delete copyall[boardId];
       return { ...copyall };
+    }); */
+    // filter 방식
+    setToDos((all) => {
+      const copyboards = { ...all };
+      const filter = Object.entries(copyboards)
+        .filter(([key, value]) => key !== boardId)
+        .reduce((result, [key, value]) => ({ ...result, [key]: value }), {});
+      return filter;
     });
   };
   return (
