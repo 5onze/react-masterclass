@@ -23,10 +23,15 @@ interface IDraggableCardProps {
   id: number;
   text: string;
   index: number;
-  deleteClick(id: number): void;
+  todosDeleteBtn(id: number): void;
 }
 
-function DraggableCard({ id, text, index, deleteClick }: IDraggableCardProps) {
+function DraggableCard({
+  id,
+  text,
+  index,
+  todosDeleteBtn,
+}: IDraggableCardProps) {
   return (
     <Draggable key={id + ""} draggableId={id + ""} index={index}>
       {(magic, snapshot) => {
@@ -38,7 +43,7 @@ function DraggableCard({ id, text, index, deleteClick }: IDraggableCardProps) {
             {...magic.draggableProps}
           >
             <Text>{text}</Text>
-            <Button onClick={() => deleteClick(id)}>X</Button>
+            <Button onClick={() => todosDeleteBtn(id)}>X</Button>
           </Card>
         );
       }}
