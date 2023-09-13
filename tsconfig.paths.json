@@ -2,13 +2,8 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@pages": ["./pages/index.tsx"],
-      "@pages/*": ["./pages/*"],
-
-      "@components": ["./components/index.tsx"],
-      "@components/*": ["./components/*"],
-
-      "@hooks": ["./hooks/index.tsx"],
+      "@routes/*": ["./Routes/*"],
+      "@components/*": ["./Components/*"],
       "@hooks/*": ["./hooks/*"]
     }
   }

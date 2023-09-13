@@ -1,11 +1,14 @@
-const path = require("path");
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 module.exports = {
-  webpack: {
-    alias: {
-      "@components": path.resolve(__dirname, "src/components"),
-      "@pages": path.resolve(__dirname, "src/pages"),
-      "@hooks": path.resolve(__dirname, "src/hooks"),
+  plugins: [
+    {
+      plugin: {
+        overrideWebpackConfig: ({ webpackConfig }) => {
+          webpackConfig.resolve.plugins.push(new TsconfigPathsPlugin({}));
+          return webpackConfig;
+        },
+      },
     },
-  },
+  ],
 };
