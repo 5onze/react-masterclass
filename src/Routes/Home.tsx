@@ -95,12 +95,37 @@ const BigMovie = styled(motion.div)`
   position: absolute;
   width: 40vw;
   height: 80vh;
-  background-color: red;
   left: 0;
   right: 0;
   margin: 0 auto;
+  overflow: hidden;
+  border-radius: 15px;
+  background-color: ${(props) => props.theme.black.lighter};
 `;
 
+const BigCover = styled.div`
+  width: 100%;
+  background-size: cover;
+  background-position: center center;
+  height: 350px;
+`;
+
+const BigTitle = styled.h3`
+  color: ${(props) => props.theme.white.lighter};
+  padding: 10px;
+  font-size: 36px;
+  position: relative;
+  top: -60px;
+`;
+
+const BigOverview = styled.p`
+  padding: 20px;
+  position: relative;
+  top: -80px;
+  color: ${(props) => props.theme.white.lighter};
+`;
+
+// Animate Variants
 const rowVariants = {
   hidden: {
     x: window.outerWidth + 5,
@@ -152,7 +177,16 @@ function Home() {
   );
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
+  // check movieId
+  const clickedMovie =
+    bigMovieMatch?.params.movieId &&
+    data?.results.find(
+      (movie) => movie.id + "" === bigMovieMatch.params.movieId
+    );
+
+  // Slider index increase.
   const increaseIndex = () => {
+    // movie data
     if (data) {
       // leaving이 true이면 return;
       if (leaving) return;
@@ -164,9 +198,12 @@ function Home() {
     }
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
+
+  // movie slider box click
   const onBoxClicked = (movieId: number) => {
     navigate(`/movies/${movieId}`);
   };
+  // 모달창 밖을 클릭.
   const onOverlayClick = () => navigate(`/`);
 
   return (
@@ -225,7 +262,20 @@ function Home() {
                   layoutId={bigMovieMatch.params.movieId}
                   style={{ top: scrollY.get() + 100 }}
                 >
-                  hello
+                  {clickedMovie && (
+                    <>
+                      <BigCover
+                        style={{
+                          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
+                            clickedMovie.backdrop_path,
+                            "w500"
+                          )})`,
+                        }}
+                      />
+                      <BigTitle>{clickedMovie.title}</BigTitle>
+                      <BigOverview>{clickedMovie.overview}</BigOverview>
+                    </>
+                  )}
                 </BigMovie>
               </>
             ) : null}
